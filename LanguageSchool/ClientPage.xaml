@@ -11,6 +11,8 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition></RowDefinition>
+            <RowDefinition Height="40"></RowDefinition>
+
         </Grid.RowDefinitions>
         <ListView Name="ClientLV">
             <ListView.ItemTemplate>
@@ -75,5 +77,29 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
+            
+            <ComboBox Name="RecordsCountPerPageCB" SelectionChanged="RecordsCountPerPageCB_SelectionChanged">
+                <TextBlock>Все записи</TextBlock>
+                <TextBlock>10 записей</TextBlock>
+                <TextBlock>50 записей </TextBlock>
+                <TextBlock>200 записей</TextBlock>
+            </ComboBox>
+            
+            <TextBlock Name="Count" FontSize="15" Height="20"></TextBlock>
+            <TextBlock Name="AllRecords" FontSize="15" Height="20"></TextBlock>
+            <Button Name="toLeft" Content="&lt;" Width="20" Height="20" Click="toLeft_Click"></Button>
+            
+            <ListBox FontSize="20" Name="ListOrientation" >
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal"></WrapPanel>
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+            </ListBox>
+            
+            <Button Name="toRight" Content="&gt;" Width="20" Height="20" Click="toRight_Click"></Button>
+        
+        </StackPanel>
     </Grid>
 </Page>
