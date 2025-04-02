@@ -1,0 +1,79 @@
+﻿<Page x:Class="LanguageSchool.ClientPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:LanguageSchool"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="ClientPage" FontFamily="Comic Sans MS" FontSize="20">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <ListView Name="ClientLV">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Image Grid.RowSpan="5">
+                            <Image.Source>
+                                <Binding Path="PhotoPath">
+                                    <Binding.TargetNullValue>
+                                        <ImageSource>
+                                            /img/school_logo.png
+                                        </ImageSource>
+                                    </Binding.TargetNullValue>
+                                </Binding> 
+                            </Image.Source>
+                        </Image>
+
+                        <WrapPanel Grid.Row="0" Grid.Column="1">
+                            <TextBlock  Text="{Binding ID, StringFormat=ID: {0} }"></TextBlock>
+                            <TextBlock Text="   "></TextBlock>
+
+                            <TextBlock  Text="{Binding LastName, StringFormat={} {0} }"></TextBlock>
+                            <TextBlock Text="   "></TextBlock>
+
+                            <TextBlock Text="{Binding FirstName , StringFormat={} {0} }"></TextBlock>
+                            <TextBlock Text="   "></TextBlock>
+
+                            <TextBlock Text="{Binding Patronymic, StringFormat={} {0} }"></TextBlock>
+                        </WrapPanel>
+                        <WrapPanel Grid.Row="1" Grid.Column="1">
+                        <TextBlock Text="{Binding GenderFull, StringFormat=Пол: {0} }"></TextBlock>
+                            <TextBlock Text="   "></TextBlock>
+                        <TextBlock Text="{Binding BirthdayCool, StringFormat=Дата рождения: {0} }"></TextBlock>
+                            
+                        </WrapPanel>
+
+                        <WrapPanel Grid.Row="2" Grid.Column="1">
+                            <TextBlock Text="{Binding Phone, StringFormat=телефон: {0} }"></TextBlock>
+                            <TextBlock Text="{Binding Email, StringFormat=e-mail: {0}}"></TextBlock>
+                        </WrapPanel>
+                        
+                            <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding RegDateShort, StringFormat=Дата регистрации: {0}}"></TextBlock>
+                        
+                        <WrapPanel Grid.Row="4" Grid.Column="1" >
+                            <TextBlock Text="{Binding LastSignUp, StringFormat=Дата последнего входа: {0}}"></TextBlock>
+                            <TextBlock Text="   "></TextBlock>
+                            <TextBlock Text="{Binding SignUpCount, StringFormat=Количество посещений: {0}}"></TextBlock>
+                        </WrapPanel>
+
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</Page>
