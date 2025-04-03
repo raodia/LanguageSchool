@@ -10,11 +10,20 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="40"></RowDefinition>
 
         </Grid.RowDefinitions>
-        <ListView Name="ClientLV">
+
+        <WrapPanel Grid.Row="0">
+            <StackPanel>
+                <TextBlock>Будущая загатовка</TextBlock>
+            </StackPanel>
+            
+        </WrapPanel>
+        
+        <ListView Name="ClientLV" Grid.Row="1">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Grid>
@@ -28,6 +37,8 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition></ColumnDefinition>
                             <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+
                         </Grid.ColumnDefinitions>
                         <Image Grid.RowSpan="5">
                             <Image.Source>
@@ -73,11 +84,13 @@
                             <TextBlock Text="{Binding SignUpCount, StringFormat=Количество посещений: {0}}"></TextBlock>
                         </WrapPanel>
 
+                        <Button Grid.Column="2" Width="150" Content="Удалить" Name="DeleteClient" Click="DeleteClient_Click"></Button>
+
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
             
             <ComboBox Name="RecordsCountPerPageCB" SelectionChanged="RecordsCountPerPageCB_SelectionChanged">
                 <TextBlock>Все записи</TextBlock>

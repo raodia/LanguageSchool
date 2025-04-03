@@ -297,5 +297,35 @@ namespace LanguageSchool
         {
 
         }
+
+        private void DeleteClient_Click(object sender, RoutedEventArgs e)
+        {
+            var currentClient = (sender as Button).DataContext as Client;
+
+            if (currentClient.LastSignUp != "нет")
+            {
+                MessageBox.Show("Невозможно удалить данные, так как существуют записи на эту услугу");
+            }
+            else
+            {
+
+                if (MessageBox.Show("Вы точно хотите удалить это?", "Внимание!",
+                    MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                {
+                    try
+                    {
+                        LanguageSHEntities.getContext().Client.Remove(currentClient);
+                        LanguageSHEntities.getContext().SaveChanges();
+                        ClientLV.ItemsSource = LanguageSHEntities.getContext().Service.ToList();
+                        Update();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message.ToString());
+                    }
+
+                }
+            }
+        }
     }
 }
