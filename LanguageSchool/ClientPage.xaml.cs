@@ -142,8 +142,8 @@ namespace LanguageSchool
         {
             var currentClient = LanguageSHEntities.getContext().Client.ToList();
 
-
-            /*
+            //=======================================================================================
+            
             if (TheFilter.SelectedIndex == 0)
             {
                 currentClient = currentClient.ToList();
@@ -151,42 +151,24 @@ namespace LanguageSchool
 
             if (TheFilter.SelectedIndex == 1)
             {
-                currentClient = currentClient.Where(p => (p.Atype == "ЗАО")).ToList();
+                currentClient = currentClient.Where(p => (p.GenderFull == "мужской")).ToList();
             }
 
             if (TheFilter.SelectedIndex == 2)
             {
-                currentClient = currentClient.Where(p => (p.Atype == "МКК")).ToList();
+                currentClient = currentClient.Where(p => (p.GenderFull == "женский")).ToList();
             }
 
-            if (TheFilter.SelectedIndex == 3)
-            {
-                currentClient = currentClient.Where(p => (p.Atype == "МФО")).ToList();
-            }
-
-            if (TheFilter.SelectedIndex == 4)
-            {
-                currentClient = currentClient.Where(p => (p.Atype == "ОАО")).ToList();
-            }
-
-            if (TheFilter.SelectedIndex == 5)
-            {
-                currentClient = currentClient.Where(p => (p.Atype == "ООО")).ToList();
-            }
-
-            if (TheFilter.SelectedIndex == 6)
-            {
-                currentClient = currentClient.Where(p => (p.Atype == "ПАО")).ToList();
-            }
+            
 
             currentClient = currentClient.Where(p =>
-            p.Title.ToLower().Contains(TheSearch.Text.ToLower())
+            p.LastName.ToLower().Contains(TheSearch.Text.ToLower())
             || p.Phone.Replace(" ", "").Replace("-", "").Replace("(", "").Replace(")", "").Replace("+", "").Contains(TheSearch.Text)
             || p.Email.ToLower().Contains(TheSearch.Text.ToLower())
             ).ToList();
-            */
+            
 
-            /*
+            
 
 
             if (TheSort.SelectedIndex == 0)
@@ -196,37 +178,37 @@ namespace LanguageSchool
 
             if (TheSort.SelectedIndex == 1)
             {
-                currentClient = currentClient.OrderByDescending(p => p.Title).ToList();
+                currentClient = currentClient.OrderBy(p => p.LastName).ToList();
             }
 
             if (TheSort.SelectedIndex == 2)
             {
-                currentClient = currentClient.OrderBy(p => p.Title).ToList();
+                currentClient = currentClient.OrderByDescending(p => p.LastName).ToList();
             }
 
 
             if (TheSort.SelectedIndex == 3)
             {
-                currentClient = currentClient.OrderByDescending(p => p.DiscountInt).ToList();
+                currentClient = currentClient.OrderBy(p => p.LastSignUpDate).ToList();
             }
 
             if (TheSort.SelectedIndex == 4)
             {
-                currentClient = currentClient.OrderBy(p => p.DiscountInt).ToList();
+                currentClient = currentClient.OrderByDescending(p => p.LastSignUpDate).ToList();
             }
 
             if (TheSort.SelectedIndex == 5)
             {
-                currentClient = currentClient.OrderByDescending(p => p.Priority).ToList();
+                currentClient = currentClient.OrderBy(p => p.SignUpCount).ToList();
             }
 
             if (TheSort.SelectedIndex == 6)
             {
-                currentClient = currentClient.OrderBy(p => p.Priority).ToList();
+                currentClient = currentClient.OrderByDescending(p => p.SignUpCount).ToList();
             }
 
-            */
-
+            //==============================================================================================
+          
             ClientLV.ItemsSource = currentClient;
 
             TableList = currentClient;
@@ -244,6 +226,10 @@ namespace LanguageSchool
 
             RecordsCountPerPageCB.SelectedIndex = 0;
             ListOrientation.SelectedIndex = 1;
+
+            TheFilter.SelectedIndex = 0;
+            TheSort.SelectedIndex = 0;
+
             //changePage(0, maxRecords, 0);
             Update();
         }
@@ -295,7 +281,12 @@ namespace LanguageSchool
 
         private void Page_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-
+            if (Visibility == Visibility.Visible)
+            {
+                LanguageSHEntities.getContext().ChangeTracker.Entries().ToList().ForEach(p => p.Reload());
+                ClientLV.ItemsSource = LanguageSHEntities.getContext().Client.ToList();
+            }
+            Update();
         }
 
         private void DeleteClient_Click(object sender, RoutedEventArgs e)
@@ -327,5 +318,21 @@ namespace LanguageSchool
                 }
             }
         }
+        private void TheSearch_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            Update();
+        }
+
+        private void TheSort_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Update();
+
+        }
+
+        private void TheFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Update();
+        }
+
     }
 }

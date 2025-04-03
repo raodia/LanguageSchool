@@ -18,7 +18,43 @@
 
         <WrapPanel Grid.Row="0">
             <StackPanel>
-                <TextBlock>Будущая загатовка</TextBlock>
+                <TextBox Name="TheSearch" Width="200" TextChanged="TheSearch_TextChanged"></TextBox>
+                
+            </StackPanel>
+            <StackPanel>
+                <ComboBox Name="TheFilter" SelectionChanged="TheFilter_SelectionChanged">
+                    <TextBlock>Все</TextBlock>
+                    <TextBlock>Мужской</TextBlock>
+                    <TextBlock>Женский</TextBlock>
+                </ComboBox>
+            </StackPanel>
+
+            <StackPanel>
+                <ComboBox Name="TheSort" SelectionChanged="TheSort_SelectionChanged">
+                    <TextBlock>
+                        Все
+                    </TextBlock>
+                    <TextBlock>
+    Фамилии в алфавитном порядке
+                    </TextBlock>
+                    <TextBlock>
+   Фамилии в обратном алфавитном порядке
+                    </TextBlock>
+                    <TextBlock>
+    По дате последнего посещения (сначала старые)
+                    </TextBlock>
+                    <TextBlock>
+    По дате последнего посещения (сначала новые)
+                    </TextBlock>
+                    <TextBlock>
+    По количеству посещений по возрастанию
+                    </TextBlock>
+                    <TextBlock>
+    По количеству посещений по убыванию
+                    </TextBlock>
+
+
+                </ComboBox>
             </StackPanel>
             
         </WrapPanel>

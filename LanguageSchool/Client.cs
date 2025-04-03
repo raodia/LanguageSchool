@@ -36,6 +36,29 @@ namespace LanguageSchool
             }
         }
 
+        public System.DateTime LastSignUpDate
+        {
+            get
+            {
+                DateTime a = DateTime.Now;
+                var last = ClientService.Where(p => p.ClientID == this.ID).ToList();
+                if (last.Count > 0)
+                {
+
+                    var result = last[0].StartTime;
+                    for (var i = 1; i < last.Count - 1; i++)
+                    {
+                        if (result > last[i].StartTime) 
+                            result = last[i].StartTime;
+
+                    }
+                    a = result;
+                }
+
+                return a;
+            }
+        }
+
         public string GenderFull
         {
             get
