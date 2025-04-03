@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,18 +25,21 @@ namespace LanguageSchool
     public partial class ClientPage : Page
     {
         int CountRecords; //количество всех записей
-        int CountPage; //количество записей на странице
+        int CountPage = 0; //количество записей на странице
         int CurrentPage = 0; // текущая страница
         List<Client> CurrentPageList = new List<Client>(); //список клиентов на этой странице
-        List<Client> TableList = new List<Client>(); //для подсчета записей используем count
-        int maxRecords; //максимальное количество записей на странице
+        List<Client> TableList = new List<Client>(); //список клиентов весь
+        int maxRecords = 0; //максимальное количество записей на странице
 
         //-------------------------------------------------------------------------------------------//
 
-        private void changePage(int direction, int recordsPerPage, int? selectedPage)
+        private void changePage(int direction, int recordsPerPage1, int? selectedPage)
         {
+            //Console.WriteLine(CurrentPageList);
             CurrentPageList.Clear();
             CountRecords = TableList.Count;
+
+            int recordsPerPage = recordsPerPage1;
 
             if (recordsPerPage == 0)
             {
@@ -44,11 +48,11 @@ namespace LanguageSchool
             } 
             else
             {
-            if (CountRecords % recordsPerPage > 0)
-            {
-            CountPage = CountRecords / 10;
-                CountPage++;
-            }
+            CountPage = CountRecords / recordsPerPage;
+                if (CountRecords % recordsPerPage > 0)
+                {
+                    CountPage++;
+                }
 
             }
 
@@ -111,6 +115,7 @@ namespace LanguageSchool
                 }
 
             }
+
             if (Ifupdate)
             {
                 ListOrientation.Items.Clear();
@@ -127,24 +132,127 @@ namespace LanguageSchool
                 ClientLV.ItemsSource = CurrentPageList.ToList();
                 ClientLV.Items.Refresh();
             }
-
+            
 
         }
-        
+
+        //===========================================================================================//
+
+        private void Update()
+        {
+            var currentClient = LanguageSHEntities.getContext().Client.ToList();
+
+
+            /*
+            if (TheFilter.SelectedIndex == 0)
+            {
+                currentClient = currentClient.ToList();
+            }
+
+            if (TheFilter.SelectedIndex == 1)
+            {
+                currentClient = currentClient.Where(p => (p.Atype == "ЗАО")).ToList();
+            }
+
+            if (TheFilter.SelectedIndex == 2)
+            {
+                currentClient = currentClient.Where(p => (p.Atype == "МКК")).ToList();
+            }
+
+            if (TheFilter.SelectedIndex == 3)
+            {
+                currentClient = currentClient.Where(p => (p.Atype == "МФО")).ToList();
+            }
+
+            if (TheFilter.SelectedIndex == 4)
+            {
+                currentClient = currentClient.Where(p => (p.Atype == "ОАО")).ToList();
+            }
+
+            if (TheFilter.SelectedIndex == 5)
+            {
+                currentClient = currentClient.Where(p => (p.Atype == "ООО")).ToList();
+            }
+
+            if (TheFilter.SelectedIndex == 6)
+            {
+                currentClient = currentClient.Where(p => (p.Atype == "ПАО")).ToList();
+            }
+
+            currentClient = currentClient.Where(p =>
+            p.Title.ToLower().Contains(TheSearch.Text.ToLower())
+            || p.Phone.Replace(" ", "").Replace("-", "").Replace("(", "").Replace(")", "").Replace("+", "").Contains(TheSearch.Text)
+            || p.Email.ToLower().Contains(TheSearch.Text.ToLower())
+            ).ToList();
+            */
+
+            /*
+
+
+            if (TheSort.SelectedIndex == 0)
+            {
+                currentClient = currentClient.ToList();
+            }
+
+            if (TheSort.SelectedIndex == 1)
+            {
+                currentClient = currentClient.OrderByDescending(p => p.Title).ToList();
+            }
+
+            if (TheSort.SelectedIndex == 2)
+            {
+                currentClient = currentClient.OrderBy(p => p.Title).ToList();
+            }
+
+
+            if (TheSort.SelectedIndex == 3)
+            {
+                currentClient = currentClient.OrderByDescending(p => p.DiscountInt).ToList();
+            }
+
+            if (TheSort.SelectedIndex == 4)
+            {
+                currentClient = currentClient.OrderBy(p => p.DiscountInt).ToList();
+            }
+
+            if (TheSort.SelectedIndex == 5)
+            {
+                currentClient = currentClient.OrderByDescending(p => p.Priority).ToList();
+            }
+
+            if (TheSort.SelectedIndex == 6)
+            {
+                currentClient = currentClient.OrderBy(p => p.Priority).ToList();
+            }
+
+            */
+
+            ClientLV.ItemsSource = currentClient;
+
+            TableList = currentClient;
+
+
+            changePage(0, maxRecords, 0);
+        }
+
         //-------------------------------------------------------------------------------------------//
-        
+
         public ClientPage()
         {
             InitializeComponent();
             ClientLV.ItemsSource = LanguageSHEntities.getContext().Client.ToList();
-            changePage(0, 0, null);
+
+            RecordsCountPerPageCB.SelectedIndex = 0;
+            ListOrientation.SelectedIndex = 1;
+            //changePage(0, maxRecords, 0);
+            Update();
         }
         
         //-------------------------------------------------------------------------------------------//
 
         private void toLeft_Click(object sender, RoutedEventArgs e)
         {
-            changePage(0, maxRecords, null);
+            changePage(1, maxRecords, null);
         }
 
         //-------------------------------------------------------------------------------------------//
@@ -152,7 +260,7 @@ namespace LanguageSchool
 
         private void toRight_Click(object sender, RoutedEventArgs e)
         {
-            changePage(1, maxRecords, null);
+            changePage(2, maxRecords, null);
         }
         
         //-------------------------------------------------------------------------------------------//
@@ -164,18 +272,30 @@ namespace LanguageSchool
             switch(indexRec)
             {
                 case 0:
-                    changePage(0, 0, null);
+                    maxRecords = 0;
                     break;
                 case 1:
-                    changePage(0, 10, null);
+                    maxRecords = 10;
                     break;
                 case 2:
-                    changePage(0, 50, null);
+                    maxRecords = 50;
                     break;
                 case 3:
-                    changePage(0, 200, null);
+                    maxRecords = 200;
                     break;
             }
+            changePage(0, maxRecords, 0);
+
+        }
+
+        private void ListOrientation_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            changePage(0, maxRecords, Convert.ToInt32(ListOrientation.SelectedItem.ToString()) - 1);
+        }
+
+        private void Page_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+
         }
     }
 }
