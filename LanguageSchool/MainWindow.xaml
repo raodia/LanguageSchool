@@ -12,7 +12,7 @@
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="30"></RowDefinition>
         </Grid.RowDefinitions>
-        <Image HorizontalAlignment="Left" Height="100" Source="img/school_logo.png"></Image>
+        <Image  HorizontalAlignment="Left" Height="100" Source="img/school_logo.png"></Image>
         <TextBlock Text="Language school" HorizontalAlignment="Center"></TextBlock>
         <Button Content="Назад" Name="ReturnBtn" Click="ReturnBtn_Click" HorizontalAlignment="Right"></Button>
         <Frame Name="MainFrame" Grid.Row="1"></Frame>

@@ -126,8 +126,8 @@ namespace LanguageSchool
                 ListOrientation.SelectedIndex = CurrentPage;
 
                 RecordsEdge = CurrentPage * recordsPerPage + recordsPerPage < CountRecords ? CurrentPage * recordsPerPage + recordsPerPage: CountRecords;
-                Count.Text = RecordsEdge.ToString();
-                AllRecords.Text = " из " + CountRecords.ToString();
+                Count.Text = CountRecords.ToString();
+                AllRecords.Text = " из " + LanguageSHEntities.getContext().Client.ToList().Count;
 
                 ClientLV.ItemsSource = CurrentPageList.ToList();
                 ClientLV.Items.Refresh();
@@ -183,29 +183,16 @@ namespace LanguageSchool
 
             if (TheSort.SelectedIndex == 2)
             {
-                currentClient = currentClient.OrderByDescending(p => p.LastName).ToList();
+                currentClient = currentClient.OrderByDescending(p => p.LastSignUpDate).ToList();
             }
 
 
             if (TheSort.SelectedIndex == 3)
             {
-                currentClient = currentClient.OrderBy(p => p.LastSignUpDate).ToList();
-            }
-
-            if (TheSort.SelectedIndex == 4)
-            {
-                currentClient = currentClient.OrderByDescending(p => p.LastSignUpDate).ToList();
-            }
-
-            if (TheSort.SelectedIndex == 5)
-            {
-                currentClient = currentClient.OrderBy(p => p.SignUpCount).ToList();
-            }
-
-            if (TheSort.SelectedIndex == 6)
-            {
                 currentClient = currentClient.OrderByDescending(p => p.SignUpCount).ToList();
+
             }
+
 
             //==============================================================================================
           

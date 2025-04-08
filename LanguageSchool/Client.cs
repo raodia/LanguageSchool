@@ -16,18 +16,26 @@ namespace LanguageSchool
         {
             get
             {
+ 
                 var a = "нет";
                 var last = ClientService.Where(p => p.ClientID == this.ID).ToList();
+                last = last.OrderByDescending(p => p.StartTime).ToList();
+                //if (last.Count > 0)
+                //{
+
+                //var result = last[0].StartTime;
+                //for (var i = 0; i < last.Count; i++)
+                //{
+                //    if (result > last[i].StartTime) 
+                //            result = last[i].StartTime;
+                        
+                //}
+                //    a = result.ToShortDateString();
+                //}
+
                 if (last.Count > 0)
                 {
-
-                var result = last[0].StartTime;
-                for (var i = 1; i < last.Count-1; i++)
-                {
-                    if (result > last[i].StartTime) result = last[i].StartTime;
-                        
-                }
-                    a = result.ToShortDateString();
+                    a = last[0].StartTime.ToShortDateString();
                 }
                 // iiioioaf
 
@@ -40,22 +48,11 @@ namespace LanguageSchool
         {
             get
             {
-                DateTime a = DateTime.Now;
-                var last = ClientService.Where(p => p.ClientID == this.ID).ToList();
-                if (last.Count > 0)
-                {
+                DateTime a = DateTime.MinValue;
+                var last = LastSignUp == "нет" ? a : DateTime.Parse(LastSignUp);
+                
 
-                    var result = last[0].StartTime;
-                    for (var i = 1; i < last.Count - 1; i++)
-                    {
-                        if (result > last[i].StartTime) 
-                            result = last[i].StartTime;
-
-                    }
-                    a = result;
-                }
-
-                return a;
+                return last;
             }
         }
 
