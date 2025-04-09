@@ -20,7 +20,7 @@
             <RowDefinition Height="auto"></RowDefinition>
         </Grid.RowDefinitions>
         <WrapPanel Orientation="Vertical" Grid.Column="0">
-            <TextBlock Margin="10">ID</TextBlock>
+            <TextBlock Name="idMeta" Margin="10">ID</TextBlock>
             <TextBlock Margin="10">Фамилия</TextBlock>
             <TextBlock Margin="10">Имя</TextBlock>
             <TextBlock Margin="10">Отчество</TextBlock>
@@ -31,7 +31,7 @@
         </WrapPanel>
 
         <WrapPanel Orientation="Vertical" Grid.Column="1">
-            <TextBlock Margin="10" Text="{Binding ID}"> </TextBlock>
+            <TextBlock Margin="10" Name="id" Text="{Binding ID}"> </TextBlock>
             <TextBox Margin="10" Text="{Binding LastName}"></TextBox>
             <TextBox Margin="10" Text="{Binding FirstName}"></TextBox>
             <TextBox Margin="10" Text="{Binding Patronymic}"></TextBox>

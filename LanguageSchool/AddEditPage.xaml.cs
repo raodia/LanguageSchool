@@ -58,8 +58,13 @@ namespace LanguageSchool
                 LanguageSHEntities.getContext().Client.Add(currentClientGlobal);
                 isNew = true;
 
-            } 
+            }
 
+            if (isNew)
+            {
+                id.Visibility = Visibility.Hidden;
+                idMeta.Visibility = Visibility.Hidden;
+            }
         }
 
 
@@ -86,8 +91,20 @@ namespace LanguageSchool
 
         private bool isEmail(string email)
         {
+            var emailParts = email.Split('@');
+            if (emailParts.Length != 2)
+            {
+                return false;
+            }
+            var domain = emailParts[1].Split('.');
+            if (domain[0].Length < 2 || domain[1].Length < 2) return false;
+            if (emailParts[1].EndsWith(".")) return false;
+
+            var cyryllic = Enumerable.Range(1024, 256).Select(ch => (char)ch);
+
             //! $ &*- = \^ ` | ~ # % ‘ + / ? _ { }
-            if (email.StartsWith("@") || email.Contains('!') || email.Contains('$') || email.Contains('&')
+            if (email.Any(cyryllic.Contains) ||
+                email.StartsWith("@") || email.Contains('!') || email.Contains('$') || email.Contains('&')
                 || email.Contains('\'') || email.Contains('+') || email.Contains('%') || email.Contains('=') || email.Contains('}') || email.Contains('{')
                 || email.EndsWith(".") || email.EndsWith("@") || email.StartsWith(".")
                 ) return false;
@@ -97,15 +114,21 @@ namespace LanguageSchool
         private void Save_Click(object sender, RoutedEventArgs e)
         {
             StringBuilder errors = new StringBuilder();
+            var fullname = currentClientGlobal.LastName + " " + currentClientGlobal.FirstName + " " + currentClientGlobal.Patronymic;
             if (string.IsNullOrWhiteSpace(currentClientGlobal.LastName) ||
                 string.IsNullOrWhiteSpace(currentClientGlobal.FirstName) ||
                 string.IsNullOrWhiteSpace(currentClientGlobal.Patronymic))
                 errors.AppendLine("Введите ваше полное ФИО");
             else if (currentClientGlobal.LastName.Length > 50 ||
                 currentClientGlobal.Patronymic.Length > 50 ||
-                currentClientGlobal.FirstName.Length > 50
-                )
-                errors.AppendLine("Длина имени фамилии или отчества не может превышать 50 символов");
+                currentClientGlobal.FirstName.Length > 50 ||
+                fullname.Contains('1') || fullname.Contains('2') || fullname.Contains('3') || fullname.Contains('4') || fullname.Contains('5') ||
+                fullname.Contains('9') || fullname.Contains('8') || fullname.Contains('7') || fullname.Contains('6') || fullname.Contains('0') ||
+                fullname.Contains('!') || fullname.Contains('$') || fullname.Contains('&')
+                || fullname.Contains('\'') || fullname.Contains('+') || fullname.Contains('%') || fullname.Contains('=') || fullname.Contains('}') || fullname.Contains('{')
+                 )
+                errors.AppendLine("Неверное ФИО");
+
 
             //if (currentClientGlobal.LastName.Contains('1', '2', '3', '4', '5', '6', '7', '8', '9', '0'))
             //    errors.AppendLine("ФИО не может содержать цифр");
@@ -117,7 +140,9 @@ namespace LanguageSchool
 
             if (string.IsNullOrWhiteSpace(currentClientGlobal.Email))
                 errors.AppendLine("Введите e-mail");
-            else if ((!currentClientGlobal.Email.Contains('@') || !currentClientGlobal.Email.Contains('.')) || !isEmail(currentClientGlobal.Email))
+            else if (
+                (!currentClientGlobal.Email.Contains('@') || !currentClientGlobal.Email.Contains('.')) || !isEmail(currentClientGlobal.Email)
+                )
             {
                 errors.AppendLine("Неправильный e-mail");
             }
