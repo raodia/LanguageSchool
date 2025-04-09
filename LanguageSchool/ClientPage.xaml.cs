@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Objects;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
@@ -209,7 +210,8 @@ namespace LanguageSchool
         public ClientPage()
         {
             InitializeComponent();
-            ClientLV.ItemsSource = LanguageSHEntities.getContext().Client.ToList();
+            var currentClients = LanguageSHEntities.getContext().Client.ToList();
+            ClientLV.ItemsSource = currentClients;
 
             RecordsCountPerPageCB.SelectedIndex = 0;
             ListOrientation.SelectedIndex = 1;
@@ -270,10 +272,10 @@ namespace LanguageSchool
         {
             if (Visibility == Visibility.Visible)
             {
-                LanguageSHEntities.getContext().ChangeTracker.Entries().ToList().ForEach(p => p.Reload());
-                ClientLV.ItemsSource = LanguageSHEntities.getContext().Client.ToList();
-            }
+                //LanguageSHEntities.getContext().ChangeTracker.Entries().ToList().ForEach(p => p.Reload());
+                //ClientLV.ItemsSource = LanguageSHEntities.getContext().Client.ToList();
             Update();
+            }
         }
 
         private void DeleteClient_Click(object sender, RoutedEventArgs e)
@@ -321,5 +323,15 @@ namespace LanguageSchool
             Update();
         }
 
+        private void AddClient_Click(object sender, RoutedEventArgs e)
+        {
+            Manager.MainFrame.Navigate(new AddEditPage(null));
+        }
+
+        private void EditClient_Click(object sender, RoutedEventArgs e)
+        {
+            Manager.MainFrame.Navigate(new AddEditPage((sender as Button).DataContext as Client));
+
+        }
     }
 }

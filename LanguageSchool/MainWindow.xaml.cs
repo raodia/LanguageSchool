@@ -24,12 +24,26 @@ namespace LanguageSchool
         {
             InitializeComponent();
             MainFrame.Navigate(new ClientPage());
+            Manager.MainFrame = MainFrame;
 
         }
 
         private void ReturnBtn_Click(object sender, RoutedEventArgs e)
         {
             Manager.MainFrame.GoBack();
+        }
+
+        private void MainFrame_ContentRendered(object sender, EventArgs e)
+        {
+            if (MainFrame.CanGoBack)
+            {
+                ReturnBtn.Visibility = Visibility.Visible;
+            }
+
+            else
+            {
+                ReturnBtn.Visibility = Visibility.Hidden;
+            }
         }
     }
 }
